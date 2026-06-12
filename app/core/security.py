@@ -32,3 +32,16 @@ def create_access_token(user_id: int) -> str:
     return jwt.encode(
         data, os.getenv("JWT_SECRET_KEY"), algorithm=os.getenv("JWT_ALGORITHM", "HS256")
     )
+
+
+def decode_access_token(token: str) -> int:
+    try:
+        data = jwt.decode(
+            token,
+            os.getenv("JWT_SECRET_KEY"),
+            algorithms=[os.getenv("JWT_ALGORITHM", "HS256")],
+        )
+
+        return int(data["sub"])
+    except (jwt.InvalidTokenError, KeyError, ValueError):
+        raise ValueError("Invalid Token")

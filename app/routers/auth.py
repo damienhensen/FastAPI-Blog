@@ -2,12 +2,14 @@ from typing import Annotated
 
 from fastapi import APIRouter, HTTPException, status, Depends
 
-from app.dependencies.auth import get_auth_service
+from app.dependencies.auth import get_auth_service, get_current_user
 from app.dtos.auth import AuthResponse, UserLogin, UserRegister
+from app.dtos.user import UserResponse
 from app.exceptions.user_exceptions import (
     EmailAlreadyExistsException,
     UsernameAlreadyExistsException,
 )
+from app.models.user import User
 from app.services.auth_service import AuthService
 
 ServiceDep = Annotated[
@@ -15,7 +17,17 @@ ServiceDep = Annotated[
     Depends(get_auth_service),
 ]
 
+CurrentUserDep = Annotated[
+    User,
+    Depends(get_current_user),
+]
+
 router = APIRouter(prefix="/auth", tags=["auth"])
+
+
+@router.get("/me", response_model=UserResponse, status_code=status.HTTP_200_OK)
+async def me(current_user: CurrentUserDep):
+    return current_user
 
 
 @router.post("/register", response_model=AuthResponse, status_code=status.HTTP_200_OK)
