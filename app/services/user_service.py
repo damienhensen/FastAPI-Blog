@@ -37,7 +37,7 @@ class UserService:
         return self.repository.update(user)
 
     def delete_user(self, user_id: int):
-        user = self.get_by_id(user_id)
+        user = self.repository.get_by_id(user_id)
 
         if user is None:
             return False
