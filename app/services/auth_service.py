@@ -1,4 +1,4 @@
-from app.core.security import hash_password, verify_password
+from app.core.security import create_access_token, hash_password, verify_password
 from app.dtos.auth import UserLogin, UserRegister
 from app.exceptions.user_exceptions import (
     EmailAlreadyExistsException,
@@ -25,11 +25,24 @@ class AuthService:
             password=hash_password(data.password),
         )
 
-        return self.repository.create(user)
+        self.repository.create(user)
+
+        return {
+            "access_token": create_access_token(user.id, user.email),
+            "refresh_token": "refreshToken",
+        }
 
     def authenticate_user(self, data: UserLogin):
         user = self.repository.get_by_email(data.email)
         if user is None:
-            return False
+            return None
 
-        return verify_password(data.password, user.password)
+        authenticated = verify_password(data.password, user.password)
+
+        if not authenticated:
+            return None
+
+        return {
+            "access_token": create_access_token(user.id, user.email),
+            "refresh_token": "refreshToken",
+        }

@@ -21,7 +21,7 @@ router = APIRouter(tags=["auth"])
 @router.post("/register", response_model=AuthResponse, status_code=status.HTTP_200_OK)
 async def register_user(new_user: UserRegister, service: ServiceDep):
     try:
-        service.register_user(new_user)
+        return service.register_user(new_user)
     except EmailAlreadyExistsException:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
@@ -38,11 +38,6 @@ async def register_user(new_user: UserRegister, service: ServiceDep):
             detail="Could not create user",
         )
 
-    return {
-        "access_token": "access",
-        "refresh_token": "refresh",
-    }
-
 
 @router.post("/login", response_model=AuthResponse, status_code=status.HTTP_200_OK)
 async def authenticate_user(data: UserLogin, service: ServiceDep):
@@ -54,7 +49,4 @@ async def authenticate_user(data: UserLogin, service: ServiceDep):
             detail="Email or password incorrect",
         )
 
-    return {
-        "access_token": "access",
-        "refresh_token": "refresh",
-    }
+    return authenticated
