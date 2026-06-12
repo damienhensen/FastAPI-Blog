@@ -17,3 +17,9 @@ class BlogRepository:
             )
             .all()
         )
+
+    def create(self, post: Post):
+        self.db.add(post)
+        self.db.commit()
+        self.db.refresh(post)
+        return post
