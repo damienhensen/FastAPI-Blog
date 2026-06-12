@@ -28,7 +28,7 @@ class AuthService:
         self.repository.create(user)
 
         return {
-            "access_token": create_access_token(user.id, user.email),
+            "access_token": create_access_token(user.id),
             "refresh_token": "refreshToken",
         }
 
@@ -43,6 +43,6 @@ class AuthService:
             return None
 
         return {
-            "access_token": create_access_token(user.id, user.email),
+            "access_token": create_access_token(user.id),
             "refresh_token": "refreshToken",
         }
