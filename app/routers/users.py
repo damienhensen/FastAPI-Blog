@@ -3,11 +3,7 @@ from typing import Annotated
 from fastapi import APIRouter, HTTPException, status, Depends
 
 from app.dependencies.users import get_user_service
-from app.dtos.user import UserCreate, UserResponse, UserUpdate
-from app.exceptions.user_exceptions import (
-    EmailAlreadyExistsException,
-    UsernameAlreadyExistsException,
-)
+from app.dtos.user import UserResponse, UserUpdate
 from app.services.user_service import UserService
 
 ServiceDep = Annotated[
@@ -30,29 +26,6 @@ async def read_user(user_id: int, service: ServiceDep):
     if user is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="User not found"
-        )
-
-    return user
-
-
-@router.post("/", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
-async def create_user(new_user: UserCreate, service: ServiceDep):
-    try:
-        user = service.create_user(new_user)
-    except EmailAlreadyExistsException:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail="Email already in use",
-        )
-    except UsernameAlreadyExistsException:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail="Username already in use",
-        )
-    except:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Could not create user",
         )
 
     return user

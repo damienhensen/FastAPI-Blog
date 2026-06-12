@@ -1,10 +1,4 @@
-from app.core.security import hash_password
-from app.dtos.user import UserCreate, UserUpdate
-from app.exceptions.user_exceptions import (
-    EmailAlreadyExistsException,
-    UsernameAlreadyExistsException,
-)
-from app.models.user import User
+from app.dtos.user import UserUpdate
 from app.repositories.user_repository import UserRepository
 
 
@@ -17,21 +11,6 @@ class UserService:
 
     def get_user(self, user_id: int):
         return self.repository.get_by_id(user_id)
-
-    def create_user(self, data: UserCreate):
-        if self.repository.get_by_email(data.email):
-            raise EmailAlreadyExistsException()
-
-        if self.repository.get_by_username(data.username):
-            raise UsernameAlreadyExistsException()
-
-        user = User(
-            username=data.username,
-            email=data.email,
-            password=hash_password(data.password),
-        )
-
-        return self.repository.create(user)
 
     def update_user(self, user_id: int, data: UserUpdate):
         user = self.repository.get_by_id(user_id)
