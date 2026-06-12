@@ -36,6 +36,7 @@ from app.models.post import Post
 from app.models.category import Category
 from app.models.tag import Tag
 from app.models.comment import Comment
+from app.models.refresh_token import RefreshToken
 
 target_metadata = Base.metadata
 
