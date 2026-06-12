@@ -15,8 +15,8 @@ class Post(Base):
     category_id: Mapped[int] = mapped_column(
         BigInteger, ForeignKey("categories.id", ondelete="SET NULL"), nullable=False
     )
-    title: Mapped[str] = mapped_column(String(255))
-    content: Mapped[str] = mapped_column(Text)
+    title: Mapped[str] = mapped_column(String(255), nullable=False)
+    content: Mapped[str] = mapped_column(Text, nullable=False)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )
