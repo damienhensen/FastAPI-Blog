@@ -7,37 +7,65 @@ The goal of this project is to learn Python and FastAPI by building a real REST 
 ## Requirements
 
 - Python 3.x
+- Docker
+- Docker Compose
 
 ## Setup
 
-Create a virtual environment:
+### Create a virtual environment:
 
 ```bash
 python -m venv .venv
 ```
 
-Activate it:
+### Activate it:
 
-Linux/macOS
+#### Linux/macOS
 
 ```bash
 source .venv/bin/activate
 ```
 
-Windows
+#### Windows
 
 ```bash
 .venv\Scripts\activate
 ```
 
-Install dependencies:
+### Install dependencies:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Run the application:
+### Create .env file:
+
+```bash
+cp .env.example .env
+```
+
+### Start docker containers:
+
+```bash
+docker compose up -d
+```
+
+### Run migrations:
+
+```bash
+alembic upgrade head
+```
+
+### Run the application:
 
 ```bash
 fastapi dev
 ```
+
+#### The API will be available at:
+
+http://localhost:8000
+
+#### Swagger documentation:
+
+http://localhost:8000/docs

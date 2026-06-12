@@ -1,6 +1,39 @@
-# Env
-.venv
+# Environment
+.venv/
 .env
 
-# Cache
-__pycache__
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Testing
+.pytest_cache/
+
+# Coverage
+.coverage
+htmlcov/
+
+# IDEs
+.vscode/
+.idea/
+
+# macOS/Linux
+.DS_Store
+
+# Alembic
+alembic/versions/*.pyc
+
+# Logs
+*.log
+
+# Build artifacts
+dist/
+build/
+*.egg-info/
+
+# Local databases
+*.db
+*.sqlite
+*.sqlite3
