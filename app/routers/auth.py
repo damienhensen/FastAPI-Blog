@@ -15,7 +15,7 @@ ServiceDep = Annotated[
     Depends(get_auth_service),
 ]
 
-router = APIRouter(tags=["auth"])
+router = APIRouter(prefix="/auth", tags=["auth"])
 
 
 @router.post("/register", response_model=AuthResponse, status_code=status.HTTP_200_OK)
