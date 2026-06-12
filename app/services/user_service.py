@@ -1,4 +1,8 @@
 from app.dtos.user import UserCreate, UserUpdate
+from app.exceptions.user_exceptions import (
+    EmailAlreadyExistsException,
+    UsernameAlreadyExistsException,
+)
 from app.models.user import User
 from app.repositories.user_repository import UserRepository
 
@@ -14,6 +18,12 @@ class UserService:
         return self.repository.get_by_id(user_id)
 
     def create_user(self, data: UserCreate):
+        if self.repository.get_by_email(data.email):
+            raise EmailAlreadyExistsException()
+
+        if self.repository.get_by_usename(data.usename):
+            raise UsernameAlreadyExistsException()
+
         user = User(
             username=data.username,
             email=data.email,
